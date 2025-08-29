@@ -30,13 +30,13 @@ func (repo *SchoolDb) Close() error {
 	return repo.db.Close()
 }
 
-func (repo *SchoolDb) GetAllStudents() ([]student, error) {
+func (repo *SchoolDb) GetAllStudents() ([]Student, error) {
 	rows, err := repo.db.Query("SELECT student_id, first_name, last_name, birth_date FROM students")
 
-	var students []student // A student "slice," similar to python list.
+	var students []Student // A student "slice," similar to python list.
 
 	for rows.Next() {
-		var s student
+		var s Student
 		rows.Scan(&s.StudentID, &s.FirstName, &s.LastName, &s.DateOfBirth)
 		students = append(students, s)
 	}
@@ -44,7 +44,7 @@ func (repo *SchoolDb) GetAllStudents() ([]student, error) {
 	return students, err
 }
 
-func (repo *SchoolDb) PostStudent(s student) error {
+func (repo *SchoolDb) PostStudent(s Student) error {
 	_, err := repo.db.Exec("INSERT INTO students (first_name, last_name, birth_date) VALUES ($1, $2, $3)", s.FirstName, s.LastName, s.DateOfBirth)
 	return err
 }
